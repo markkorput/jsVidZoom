@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jsVidZoom</title>
+
+    <style>
+      #container{ display: block; overflow: hidden; width: 640px; height: 239px; }
+      #container #overlay{display: block;  position: absolute; width: 640px; height: 239px; z-index:10; }
+      #container #overlay:hover{background-color: rgba(255,0,0,0.2);}
+      #container iframe{position: relative; top: 0px; left: 0px; z-index: 0;}
+
+      #container.zoom-left{width: 320px;}
+      #container.zoom-right{width: 320px; margin-left: 320px;}
+      #container.zoom-right iframe{margin-left: -320px;}
+    </style>
+
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type='text/javascript'>
+      function video_toggle(){
+
+      }
+
+      function show_all(){
+        console.log('ui');
+        $('#container').removeClass('zoom-left').removeClass('zoom-right');
+      }
+
+      function show_left(){
+        console.log('ai');
+        $('#container').removeClass('zoom-right').addClass('zoom-left');
+      }
+
+      function show_right(){
+        console.log('oi');
+        $('#container').removeClass('zoom-left').addClass('zoom-right');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <!-- <div id="overlay">&nbsp</div> -->
+      <iframe
+        src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0"
+        width="640"
+        height="239"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen>
+      </iframe>
+    </div>
+    <p>
+      <a href="https://vimeo.com/1588371">Natures #3B</a>
+      from <a href="https://vimeo.com/quayola">Quayola</a>
+      on <a href="https://vimeo.com">Vimeo</a>.
+    </p>
+
+    <a href="#" onclick="video_toggle(); return false;" id="ctrl-toggle">Play</a>
+    Show:
+    <a href="#" onclick="show_all(); return false;">all</a>
+    <a href="#" onclick="show_left(); return false;">left</a>
+    <a href="#" onclick="show_right(); return false;">right</a>
+  </body>
+</html>
