@@ -284,6 +284,7 @@
 
 		// Default cursor style for the element
 		cursor: 'move',
+		disableDrag: true,
 
 		// There may be some use cases for zooming without panning or vice versa
 		disablePan: false,
@@ -954,7 +955,7 @@
 
 			// Bind $elem drag and click/touchdown events
 			// Bind touchstart if either panning or zooming is enabled
-			if (!options.disablePan || !options.disableZoom) {
+			if (!options.disableDrag && (!options.disablePan || !options.disableZoom)) {
 				events[ str_start ] = function(e) {
 					var touches;
 					if (e.type === 'touchstart' ?

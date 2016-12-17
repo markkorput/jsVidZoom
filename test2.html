@@ -5,16 +5,8 @@
     <title>jsVidZoom</title>
 
     <style>
-      #container{ display: block; overflow: hidden; width: 640px; height: 239px; margin:0; padding:0; }
-      #container .overlay{display: inline-block; margin:0; padding:0; width: 320px; height:239px; z-index:10; position: absolute;}
-      #container .overlay#right{left: 328px;}
-      #container iframe{position: relative; top: 0px; left: 0px; z-index: 0;}
-
-      #container.zoom-left{width: 320px;}
-      #container.zoom-right{width: 320px; margin-left: 320px;}
-      #container.zoom-right iframe{margin-left: -320px;}
-
-      #controls{ display: block; width: 100%; text-align: center; position: fixed; }
+      #container{ display: block; overflow: hidden; width: 1280px; height: 478px; margin:0 auto; padding:0; text-align: center; }
+      #controls{ display: block; width: 100%; text-align: center; position: fixed; top: 500px; }
     </style>
 
     <script type='text/javascript'>
@@ -36,26 +28,27 @@
       }
 
       function show_all(){
-        $('#container').removeClass('zoom-left').removeClass('zoom-right');
+        $("#container").panzoom('zoom', 0.5, {'animate': true});
+        $("#container").panzoom('pan', 0, 0, {'animate': true});
       }
 
       function show_left(){
-        $('#container').removeClass('zoom-right').addClass('zoom-left');
+        $("#container").panzoom('zoom', 1.0, {'animate': true});
+        $("#container").panzoom('pan', 320, 0, {'animate': true});
       }
 
       function show_right(){
-        $('#container').removeClass('zoom-left').addClass('zoom-right');
+        $("#container").panzoom('zoom', 1.0, {'animate': true});
+        $("#container").panzoom('pan', -320, 0, {'animate': true});
       }
     </script>
   </head>
   <body>
     <div id="container">
-      <div class="overlay" id="left">&nbsp</div>
-      <div class="overlay" id="right">&nbsp</div>
       <iframe
         src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0&api=1"
-        width="640"
-        height="239"
+        width="1280"
+        height="478"
         frameborder="0"
         webkitallowfullscreen
         mozallowfullscreen
@@ -94,9 +87,8 @@
         });
 
         window.player = player;
-        $("#container").panzoom('zoom', 2.0);
-        $("#container").panzoom({'disablePan': true, 'disableZoom': true});
-
+        $("#container").panzoom({}); // {'disablePan': true, 'disableZoom': true}
+        $("#container").panzoom('zoom', 0.5);
       })
     </script>
   </body>
