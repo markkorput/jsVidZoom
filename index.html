@@ -16,9 +16,39 @@
     </style>
 
     <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script type='text/javascript'>
-      function video_toggle(){
+    <script src="https://player.vimeo.com/api/player.js"></script>
 
+    <script type='text/javascript'>
+      $(document).ready(function(){
+        console.log('yeeee');
+        var iframe = $('#container iframe');
+        var player = new Vimeo.Player(iframe);
+        player.on('pause', function(){
+          $('#ctrl-toggle').text('Play');
+        });
+
+        player.on('play', function(){
+          $('#ctrl-toggle').text('Pause');
+        });
+
+        window.player = player;
+      })
+
+      function video_toggle(){
+        window.player.getPaused().then(function(paused){
+          if(paused){
+            window.player.play();
+            return;
+          }
+
+          window.player.getEnded().then(function(ended){
+            if(ended){
+              window.player.play();
+            } else {
+              window.player.pause();
+            }
+          })
+        })
       }
 
       function show_all(){
@@ -41,7 +71,7 @@
     <div id="container">
       <!-- <div id="overlay">&nbsp</div> -->
       <iframe
-        src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0"
+        src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0&api=1"
         width="640"
         height="239"
         frameborder="0"
