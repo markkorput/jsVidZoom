@@ -6,9 +6,14 @@
 
     <style>
       #container{ display: block; overflow: hidden; width: 1280px; height: 478px; margin:0 auto; padding:0; text-align: center; }
+
       #container .overlay{position: absolute; margin:0; padding:0; height:478px; z-index:10; }
       #container .overlay:hover{background-color:rgba(255,255,255,0.2); }
+      #container.zoomed .overlay{ background-color:rgba(255,255,255,0.9); }
+      #container.zoomed .overlay.active{ background-color:transparent }
+      #container.zoomed .overlay:hover{ background-color:rgba(255,255,255,0.2); }
       #container iframe{display: block;}
+
       #controls{ display: block; width: 100%; text-align: center; position: fixed; top: 500px; }
       #controls a{margin:0 3px;}
     </style>
@@ -68,6 +73,9 @@
 
         $("#container").panzoom('zoom', 1.0, {'animate': true});
         $("#container").panzoom('pan', pan_x, 0, {'animate': true});
+
+        $("#container .overlay").removeClass('active');
+        $("#container .overlay:eq("+part_index+")").addClass('active');
       }
     </script>
   </head>
@@ -128,6 +136,15 @@
             if($('#container .overlay')[i] == event.target){
               show_part(i);
             }
+          }
+        });
+
+        $('#container').on('panzoomstart', function(){ console.log('panzoom:start'); });
+        $('#container').on('panzoomzoom', function(event, panzoom, scale, opts){
+          if(scale == 1.0){
+            $(event.target).addClass('zoomed');
+          } else {
+            $(event.target).removeClass('zoomed');
           }
         });
       })
