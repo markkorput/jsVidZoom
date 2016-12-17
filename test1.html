@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jsVidZoom</title>
+
+    <style>
+      #container{ display: block; overflow: hidden; width: 640px; height: 239px; margin:0; padding:0; }
+      #container .overlay{display: inline-block; margin:0; padding:0; width: 320px; height:239px; z-index:10; position: absolute;}
+      #container .overlay#right{left: 328px;}
+      #container iframe{position: relative; top: 0px; left: 0px; z-index: 0;}
+
+      #container.zoom-left{width: 320px;}
+      #container.zoom-right{width: 320px; margin-left: 320px;}
+      #container.zoom-right iframe{margin-left: -320px;}
+
+      #controls{ display: block; width: 100%; text-align: center; position: fixed; }
+    </style>
+
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+
+    <script type='text/javascript'>
+      function video_toggle(){
+        window.player.getPaused().then(function(paused){
+          if(paused){
+            window.player.play();
+            return;
+          }
+
+          window.player.getEnded().then(function(ended){
+            if(ended){
+              window.player.play();
+            } else {
+              window.player.pause();
+            }
+          });
+        });
+      }
+
+      function show_all(){
+        $('#container').removeClass('zoom-left').removeClass('zoom-right');
+        zoom.out();
+      }
+
+      function show_left(){
+        $('#container').removeClass('zoom-right').addClass('zoom-left');
+        zoom.to({ element: document.querySelector('#container .overlay#left') });
+      }
+
+      function show_right(){
+        $('#container').removeClass('zoom-left').addClass('zoom-right');
+        zoom.to({ element: document.querySelector('#container .overlay#right') });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div class="overlay" id="left">&nbsp</div>
+      <div class="overlay" id="right">&nbsp</div>
+      <iframe
+        src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0&api=1"
+        width="640"
+        height="239"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div id="controls">
+      <p>
+        <a href="https://vimeo.com/1588371">Natures #3B</a>
+        from <a href="https://vimeo.com/quayola">Quayola</a>
+        on <a href="https://vimeo.com">Vimeo</a>.
+      </p>
+
+      <a href="#" onclick="video_toggle(); return false;" id="ctrl-toggle">Play</a>
+      Show:
+      <a href="#" onclick="show_all(); return false;">all</a>
+      <a href="#" onclick="show_left(); return false;">left</a>
+      <a href="#" onclick="show_right(); return false;">right</a>
+    </div>
+    <script src="js/zoom.js"></script>
+
+    <script type='text/javascript'>
+      $(document).ready(function(){
+        var iframe = $('#container iframe');
+        var player = new Vimeo.Player(iframe);
+        player.on('pause', function(){
+          $('#ctrl-toggle').text('Play');
+        });
+
+        player.on('play', function(){
+          $('#ctrl-toggle').text('Pause');
+        });
+
+        window.player = player;
+
+        // document.querySelector( 'body' ).addEventListener( 'click', function( event ) {
+        //   event.preventDefault();
+        //   zoom.to({ element: event.target });
+        // });
+      })
+    </script>
+  </body>
+</html>

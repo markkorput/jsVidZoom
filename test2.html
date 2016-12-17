@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jsVidZoom</title>
+
+    <style>
+      #container{ display: block; overflow: hidden; width: 1280px; height: 478px; margin:0 auto; padding:0; text-align: center; }
+      #controls{ display: block; width: 100%; text-align: center; position: fixed; top: 500px; }
+    </style>
+
+    <script type='text/javascript'>
+      function video_toggle(){
+        window.player.getPaused().then(function(paused){
+          if(paused){
+            window.player.play();
+            return;
+          }
+
+          window.player.getEnded().then(function(ended){
+            if(ended){
+              window.player.play();
+            } else {
+              window.player.pause();
+            }
+          });
+        });
+      }
+
+      function show_all(){
+        $("#container").panzoom('zoom', 0.5, {'animate': true});
+        $("#container").panzoom('pan', 0, 0, {'animate': true});
+      }
+
+      function show_left(){
+        $("#container").panzoom('zoom', 1.0, {'animate': true});
+        $("#container").panzoom('pan', 320, 0, {'animate': true});
+      }
+
+      function show_right(){
+        $("#container").panzoom('zoom', 1.0, {'animate': true});
+        $("#container").panzoom('pan', -320, 0, {'animate': true});
+      }
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <iframe
+        src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0&api=1"
+        width="1280"
+        height="478"
+        frameborder="0"
+        webkitallowfullscreen
+        mozallowfullscreen
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div id="controls">
+      <p>
+        <a href="https://vimeo.com/1588371">Natures #3B</a>
+        from <a href="https://vimeo.com/quayola">Quayola</a>
+        on <a href="https://vimeo.com">Vimeo</a>.
+      </p>
+
+      <a href="#" onclick="video_toggle(); return false;" id="ctrl-toggle">Play</a>
+      Show:
+      <a href="#" onclick="show_all(); return false;">all</a>
+      <a href="#" onclick="show_left(); return false;">left</a>
+      <a href="#" onclick="show_right(); return false;">right</a>
+    </div>
+
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script src="js/jquery.panzoom.js"></script>
+
+    <script type='text/javascript'>
+      $(document).ready(function(){
+        var iframe = $('#container iframe');
+        var player = new Vimeo.Player(iframe);
+        player.on('pause', function(){
+          $('#ctrl-toggle').text('Play');
+        });
+
+        player.on('play', function(){
+          $('#ctrl-toggle').text('Pause');
+        });
+
+        window.player = player;
+        $("#container").panzoom({}); // {'disablePan': true, 'disableZoom': true}
+        $("#container").panzoom('zoom', 0.5);
+      })
+    </script>
+  </body>
+</html>
