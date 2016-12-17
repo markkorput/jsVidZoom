@@ -79,7 +79,7 @@
 
     <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://player.vimeo.com/api/player.js"></script>
-    <script src="/js/plugins/jquery.panzoom.js"></script>
+    <script src="js/jquery.panzoom.js"></script>
 
     <script type='text/javascript'>
       $(document).ready(function(){
@@ -94,6 +94,8 @@
         });
 
         window.player = player;
+        $("#container").panzoom('zoom', 2.0);
+        $("#container").panzoom({'disablePan': true, 'disableZoom': true});
 
       })
     </script>
