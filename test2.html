@@ -6,7 +6,11 @@
 
     <style>
       #container{ display: block; overflow: hidden; width: 1280px; height: 478px; margin:0 auto; padding:0; text-align: center; }
+      #container .overlay{position: absolute; margin:0; padding:0; height:478px; z-index:10; }
+      #container .overlay:hover{background-color:rgba(255,255,255,0.2); }
+      #container iframe{display: block;}
       #controls{ display: block; width: 100%; text-align: center; position: fixed; top: 500px; }
+      #controls a{margin:0 3px;}
     </style>
 
     <script type='text/javascript'>
@@ -27,19 +31,42 @@
         });
       }
 
+      function create_overlays(amount){
+        var w = $('#container').width() / amount;
+        var container_x = 0; $('#container').position().left;
+
+        for(var i=(amount-1); i>=0; i--){
+          var el = $('<a href="#" class="overlay" id="overlay'+(i+1)+'" return false;">&nbsp;</a>');
+          el.css({'left': (container_x+i*w)+'px', 'width': w});
+          $('#container').prepend(el);
+        }
+      }
+
+      function create_section_links(amount){
+        if(amount == undefined){
+          amount = $('#container .overlay').length;
+          for(var i=0; i<amount; i++){
+            var el = $('<a href="#" onclick="show_part('+i+')">section #'+(i+1)+'</a>');
+            $('#controls').append(el);
+          }
+        }
+
+      }
       function show_all(){
         $("#container").panzoom('zoom', 0.5, {'animate': true});
         $("#container").panzoom('pan', 0, 0, {'animate': true});
       }
 
-      function show_left(){
-        $("#container").panzoom('zoom', 1.0, {'animate': true});
-        $("#container").panzoom('pan', 320, 0, {'animate': true});
-      }
+      function show_part(part_index){
+        var parts_count = $('#container .overlay').length;
+        var container_width = $("#container").width();
 
-      function show_right(){
+        var middle_part_index = (parts_count-1)/2;
+        var part_width = container_width/parts_count;
+        var pan_x = -(part_index-middle_part_index)*part_width;
+
         $("#container").panzoom('zoom', 1.0, {'animate': true});
-        $("#container").panzoom('pan', -320, 0, {'animate': true});
+        $("#container").panzoom('pan', pan_x, 0, {'animate': true});
       }
     </script>
   </head>
@@ -66,8 +93,6 @@
       <a href="#" onclick="video_toggle(); return false;" id="ctrl-toggle">Play</a>
       Show:
       <a href="#" onclick="show_all(); return false;">all</a>
-      <a href="#" onclick="show_left(); return false;">left</a>
-      <a href="#" onclick="show_right(); return false;">right</a>
     </div>
 
     <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -86,9 +111,24 @@
           $('#ctrl-toggle').text('Pause');
         });
 
+        create_overlays(3);
+        create_section_links();
+
         window.player = player;
-        $("#container").panzoom({}); // {'disablePan': true, 'disableZoom': true}
+        $("#container").panzoom({'disableDrag': true, 'cursor': 'normal'}); // {'disablePan': true, 'disableZoom': true}
         $("#container").panzoom('zoom', 0.5);
+
+        $('#container iframe').show();
+
+        $('#container .overlay').on('click', function(event){
+          event.preventDefault();
+          var parts_count = $('#container .overlay').length;
+          for(var i=0; i<parts_count; i++){
+            if($('#container .overlay')[i] == event.target){
+              show_part(i);
+            }
+          }
+        });
       })
     </script>
   </body>
