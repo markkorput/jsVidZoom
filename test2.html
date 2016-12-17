@@ -59,7 +59,8 @@
 
       function show_part(part_index){
         var parts_count = $('#container .overlay').length;
-        var container_width = $("#container").width();
+        var current_zoom = $("#container").panzoom('getMatrix')[0];
+        var container_width = $("#container").width() / current_zoom;
 
         var middle_part_index = (parts_count-1)/2;
         var part_width = container_width/parts_count;
