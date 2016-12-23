@@ -50,12 +50,12 @@
       function create_section_links(amount){
         if(amount == undefined){
           amount = $('#container .overlay').length;
-          for(var i=0; i<amount; i++){
-            var el = $('<a href="#" onclick="show_part('+i+')">section #'+(i+1)+'</a>');
-            $('#controls').append(el);
-          }
         }
 
+        for(var i=0; i<amount; i++){
+          var el = $('<a href="#" onclick="show_part('+i+')">section #'+(i+1)+'</a>');
+          $('#controls').append(el);
+        }
       }
       function show_all(){
         $("#container").panzoom('zoom', 0.5, {'animate': true});
