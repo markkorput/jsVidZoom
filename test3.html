@@ -7,7 +7,7 @@
     <style>
       #container{ display: block; overflow: hidden; width: 1280px; height: 478px; margin:0 auto; padding:0; text-align: center; }
 
-      #container .overlay{position: absolute; margin:0; padding:0; height:478px; z-index:10; text-decoration:none; }
+      #container .overlay{position: absolute; margin:0; padding:0; z-index:10; text-decoration:none; }
       #container .overlay:hover{background-color:rgba(255,255,255,0.2); }
       #container.zoomed .overlay{ background-color:rgba(255,255,255,0.9); }
       #container.zoomed .overlay.active{ background-color:transparent }
@@ -36,15 +36,25 @@
         });
       }
 
-      function create_overlays(amount){
-        var w = $('#container').width() / amount;
-        var container_x = 0; $('#container').position().left;
+      // function create_overlays(amount){
+      //   var w = $('#container').width() / amount;
+      //   var container_x = 0; $('#container').position().left;
+      //
+      //   for(var i=(amount-1); i>=0; i--){
+      //     var el = $('<a href="#" class="overlay" id="overlay'+(i+1)+'" return false;">&nbsp;</a>');
+      //     el.css({'left': (container_x+i*w)+'px', 'width': w});
+      //     $('#container').prepend(el);
+      //   }
+      // }
 
-        for(var i=(amount-1); i>=0; i--){
-          var el = $('<a href="#" class="overlay" id="overlay'+(i+1)+'" return false;">&nbsp;</a>');
-          el.css({'left': (container_x+i*w)+'px', 'width': w});
-          $('#container').prepend(el);
-        }
+      function create_overlay(x,y,w,h){
+        var existing_overlay_count = $('#container .overlay').length;
+        var container_x = 0; // $('#container').position().left;
+        var container_y = 0; // $('#container').position().top;
+
+        var el = $('<a href="#" class="overlay" id="overlay'+(existing_overlay_count+1)+'" return false;">&nbsp;</a>');
+        el.css({'left': (container_x+x)+'px', 'top': (container_y+y)+'px',  'width': w, 'height': h});
+        $('#container').append(el);
       }
 
       function create_section_links(amount){
@@ -82,9 +92,9 @@
   <body>
     <div id="container">
       <iframe
-        src="https://player.vimeo.com/video/1588371?color=ffffff&title=0&byline=0&portrait=0&api=1"
+        src="https://player.vimeo.com/video/196567315"
         width="1280"
-        height="478"
+        height="720"
         frameborder="0"
         webkitallowfullscreen
         mozallowfullscreen
@@ -94,8 +104,8 @@
 
     <div id="controls">
       <p>
-        <a href="https://vimeo.com/1588371">Natures #3B</a>
-        from <a href="https://vimeo.com/quayola">Quayola</a>
+        <a href="https://vimeo.com/196567315">Wachtruimte_Test_All</a>
+        from <a href="https://vimeo.com/tomelswijk">Tom Elswijk</a>
         on <a href="https://vimeo.com">Vimeo</a>.
       </p>
 
@@ -120,7 +130,12 @@
           $('#ctrl-toggle').text('Pause');
         });
 
-        create_overlays(4);
+        var container_w = $('#container').width();
+        var container_h = $('#container').height();
+        create_overlay(0, 0, container_w/2, container_h/2);
+        create_overlay(container_w/2, 0, container_w/2, container_h/2);
+        create_overlay(0, container_h/2, container_w/2, container_h/2);
+        create_overlay(container_w/2, container_h/2, container_w/2, container_h/2);
         create_section_links();
 
         window.player = player;
