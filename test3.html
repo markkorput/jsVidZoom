@@ -5,17 +5,20 @@
     <title>jsVidZoom</title>
 
     <style>
-      #container{display: block; position: absolute; top: 10px; left: 0; right: 0; width: 1280px; height: 720px;}
+      body{ background-color: black; font-family: arial, sans-serif; }
+      h1{ color: white; position: absolute; display: block; width: 100%; text-align: center;}
+      #container{display: block; position: absolute; top: 10px; left: 0; right: 0; width: 1280px; height: 720px; border: 1px solid #555;}
 
       #container .overlay{position: absolute; margin:0; padding:0; z-index:10; text-decoration:none; }
-      #container .overlay:hover{background-color:rgba(255,255,255,0.2); }
-      #container.zoomed .overlay{ background-color:rgba(255,255,255,0.9); }
+      #container .overlay:hover{background-color:rgba(255,255,255,0.1); }
+      #container.zoomed .overlay{ background-color:rgba(0,0,0,0.8); }
       #container.zoomed .overlay.active{ background-color:transparent }
-      #container.zoomed .overlay:hover{ background-color:rgba(255,255,255,0.2); }
+      #container.zoomed .overlay:hover{ background-color:rgba(255,255,255,0.1); }
       #container iframe{display: block;}
 
-      #controls{position: absolute; bottom: 10px; left: 0; right: 0; display: block; background-color: rgba(255,255,255,0.5); text-align: center; z-index: 20; margin: 0 auto;}
-      #controls a{margin:0 3px;}
+      #controls{position: absolute; bottom: 10px; left: 0; right: 0; display: block; background-color: rgba(255,255,255,0.1); text-align: center; z-index: 20; margin: 0 auto; padding: 10px 0; color: rgb(180,180,180);}
+      #controls a{margin:0 3px; color: rgb(255,255,255); font-weight: bold;}
+      #controls #sectionlinks{display: inline-block;}
     </style>
 
     <script type='text/javascript'>
@@ -57,8 +60,8 @@
         }
 
         for(var i=0; i<amount; i++){
-          var el = $('<a href="#" onclick="show_part('+i+'); return false;">section #'+(i+1)+'</a>');
-          $('#controls').append(el);
+          var el = $('<a href="#" onclick="show_part('+i+'); return false;">#'+(i+1)+'</a>');
+          $('#controls #sectionlinks').append(el);
         }
       }
 
@@ -86,6 +89,7 @@
     </script>
   </head>
   <body>
+    <h1>De ondergrondse wachtruimte</h1>
     <div id="container">
       <iframe
         src="https://player.vimeo.com/video/196567315"
@@ -99,15 +103,16 @@
     </div>
 
     <div id="controls">
+      <a href="#" onclick="video_toggle(); return false;" id="ctrl-toggle">Play</a>
+      Show:
+      <a href="#" onclick="show_all(); return false;">all</a>
+      <div id="sectionlinks">&nbsp;</div>
+
       <p>
         <a href="https://vimeo.com/196567315">Wachtruimte_Test_All</a>
         from <a href="https://vimeo.com/tomelswijk">Tom Elswijk</a>
         on <a href="https://vimeo.com">Vimeo</a>.
       </p>
-
-      <a href="#" onclick="video_toggle(); return false;" id="ctrl-toggle">Play</a>
-      Show:
-      <a href="#" onclick="show_all(); return false;">all</a>
     </div>
 
     <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
