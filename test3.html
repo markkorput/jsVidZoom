@@ -7,6 +7,7 @@
     <style>
       body{ background-color: black; font-family: arial, sans-serif; }
       h1{ color: white; position: absolute; display: block; width: 100%; text-align: center;}
+      #restrictor{display: block; width:100%; margin:0; padding:0; height: 650px; overflow:hidden;}
       #container{display: block; position: absolute; top: 10px; left: 0; right: 0; width: 1280px; height: 720px; border: 1px solid #555;}
 
       #container .overlay{position: absolute; margin:0; padding:0; z-index:10; text-decoration:none; }
@@ -71,11 +72,18 @@
       }
 
       function show_part(part_index, zoom){
+        var overlay = $($('#container .overlay')[part_index]);
+
+        // already active? zoom out
+        if(overlay.hasClass('active')){
+          show_all();
+          return;
+        }
+
         zoom = zoom || window.zoom_zoom || 1.2;
         var current_zoom = $("#container").panzoom('getMatrix')[0];
         // console.log('zoom/current zoom: ', zoom, current_zoom);
 
-        var overlay = $($('#container .overlay')[part_index]);
         var pan_x = -overlay.data('delta-x') * zoom;
         var pan_y = -overlay.data('delta-y') * zoom;
         // console.log('pan zoom:', pan_x, pan_y);
@@ -90,16 +98,19 @@
   </head>
   <body>
     <h1>De ondergrondse wachtruimte</h1>
-    <div id="container">
-      <iframe
-        src="https://player.vimeo.com/video/196567315"
-        width="1280"
-        height="720"
-        frameborder="0"
-        webkitallowfullscreen
-        mozallowfullscreen
-        allowfullscreen>
-      </iframe>
+
+    <div id="restrictor">
+      <div id="container">
+        <iframe
+          src="https://player.vimeo.com/video/196567315"
+          width="1280"
+          height="720"
+          frameborder="0"
+          webkitallowfullscreen
+          mozallowfullscreen
+          allowfullscreen>
+        </iframe>
+      </div>
     </div>
 
     <div id="controls">
